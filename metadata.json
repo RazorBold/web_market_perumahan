@@ -1,0 +1,6 @@
+{
+  "name": "Hyarta Ecovillage - Luxury Modern Living in Yogyakarta",
+  "description": "Exclusive eco-living residential community in Yogyakarta featuring modern tropical townhouses, interactive 3D architectural viewer, interactive masterplan, and GSAP motion animations.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
