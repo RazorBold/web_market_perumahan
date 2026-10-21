@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { MASTERPLAN_UNITS } from '../data/propertyData';
 import { PropertyUnit, formatRupiah } from '../utils/propertyLogic';
 import { Layers, ZoomIn, ZoomOut, RotateCcw, CheckCircle2, Clock, AlertCircle } from 'lucide-react';
+import { whatsappLink } from '../config/contact';
 
 interface MasterplanViewerProps {
   onSelectUnit?: (unit: PropertyUnit) => void;
@@ -366,11 +367,11 @@ export const MasterplanViewer: React.FC<MasterplanViewerProps> = ({
                   Simulasi KPR
                 </button>
                 <a
-                  href={`https://wa.me/6281234567890?text=${encodeURIComponent(
+                  href={whatsappLink(
                     `Halo Hyarta Ecovillage, saya tertarik dengan unit ${activeUnit.name} (${activeUnit.type}) harga ${formatRupiah(
                       activeUnit.price
                     )}. Mohon info ketersediaan & jadwal kunjungan.`
-                  )}`}
+                  )}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex-1 sm:flex-none px-5 py-2.5 rounded-full bg-[#c88242] text-white hover:bg-[#b07137] text-xs font-semibold tracking-wide transition-all shadow-md"

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Phone, Box, Sparkles, MapPin } from 'lucide-react';
+import { whatsappLink } from '../config/contact';
 
 interface NavbarProps {
   onOpen3D: () => void;
@@ -92,7 +93,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpen3D, onOpenKpr }) => {
           </button>
 
           <a
-            href="https://wa.me/6281234567890?text=Halo%20Hyarta%20Ecovillage,%20saya%20tertarik%20untuk%20jadwalkan%20visit%20dan%20konsultasi%20unit."
+            href={whatsappLink('Halo Hyarta Ecovillage, saya tertarik untuk jadwalkan visit dan konsultasi unit.')}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 px-5 py-2 rounded-full bg-[#c88242] hover:bg-[#b07137] text-white text-xs font-semibold tracking-wider uppercase transition-all shadow-md hover:shadow-lg hover:scale-105"
@@ -140,7 +141,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpen3D, onOpenKpr }) => {
               <Box className="w-4 h-4" /> Buka 3D Model Explorer
             </button>
             <a
-              href="https://wa.me/6281234567890?text=Halo%20Hyarta%20Ecovillage,%20saya%20tertarik%20untuk%20jadwalkan%20visit."
+              href={whatsappLink('Halo Hyarta Ecovillage, saya tertarik untuk jadwalkan visit.')}
               target="_blank"
               rel="noopener noreferrer"
               className="w-full py-3 rounded-full bg-[#1b3224] text-white text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2"

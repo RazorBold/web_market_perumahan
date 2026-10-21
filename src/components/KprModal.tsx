@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { calculateKpr, formatRupiah, PropertyUnit } from '../utils/propertyLogic';
 import { Calculator, X, Building, Check, ArrowRight, ShieldCheck, Percent, Calendar } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { openWhatsapp, whatsappLink } from '../config/contact';
 
 interface KprModalProps {
   unit: Partial<PropertyUnit> | null;
@@ -12,6 +13,16 @@ interface KprModalProps {
 export const KprModal: React.FC<KprModalProps> = ({ unit, isOpen, onClose }) => {
   if (!isOpen || !unit) return null;
 
+  // Keyed by unit so the calculator state resets whenever a different unit is opened
+  return <KprModalContent key={`${unit.id ?? ''}-${unit.name ?? ''}-${unit.price ?? ''}`} unit={unit} onClose={onClose} />;
+};
+
+interface KprModalContentProps {
+  unit: Partial<PropertyUnit>;
+  onClose: () => void;
+}
+
+const KprModalContent: React.FC<KprModalContentProps> = ({ unit, onClose }) => {
   const defaultPrice = unit.price || 2150000000;
   const [propertyPrice, setPropertyPrice] = useState<number>(defaultPrice);
   const [downPaymentPercent, setDownPaymentPercent] = useState<number>(20);
@@ -30,9 +41,18 @@ export const KprModal: React.FC<KprModalProps> = ({ unit, isOpen, onClose }) => 
     { name: 'CIMB Niaga', rate: 6.0 },
   ];
 
+  const consultationMessage = `Halo Hyarta Ecovillage, saya ${buyerName} (${buyerPhone}) sudah melakukan simulasi KPR untuk ${
+    unit.name || 'Hyarta Ecovillage'
+  }: harga ${formatRupiah(propertyPrice)}, DP ${downPaymentPercent}%, tenor ${tenureYears} tahun, bunga ${interestRate}%, cicilan perkiraan ${formatRupiah(
+    kprResult.monthlyInstallment
+  )}/bulan. Mohon dihubungi untuk brosur & jadwal private viewing.`;
+
   const handleSubmitConsultation = (e: React.FormEvent) => {
     e.preventDefault();
     if (!buyerName || !buyerPhone) return;
+
+    // No backend yet: the lead is delivered by handing the prefilled message to WhatsApp
+    openWhatsapp(consultationMessage);
 
     confetti({
       particleCount: 60,
@@ -61,6 +81,7 @@ export const KprModal: React.FC<KprModalProps> = ({ unit, isOpen, onClose }) => 
 
           <button
             onClick={onClose}
+            aria-label="Tutup simulasi KPR"
             className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white/80 hover:text-white transition-colors"
           >
             <X className="w-4 h-4" />
@@ -75,12 +96,13 @@ export const KprModal: React.FC<KprModalProps> = ({ unit, isOpen, onClose }) => 
                 <Check className="w-8 h-8" />
               </div>
               <h4 className="text-2xl font-serif-luxury font-bold text-[#1b3224]">
-                Permintaan Konsultasi Diterima!
+                Tinggal Satu Langkah Lagi!
               </h4>
               <p className="text-sm text-[#5a625a] max-w-md mx-auto">
-                Terima kasih Bapak/Ibu <strong className="text-black">{buyerName}</strong>. Tim priority banking advisor
-                kami akan segera menghubungi Anda di <strong className="text-black">{buyerPhone}</strong> dengan rincian
-                persetujuan instan.
+                Terima kasih Bapak/Ibu <strong className="text-black">{buyerName}</strong>. Kirim pesan yang sudah kami
+                siapkan di WhatsApp agar tim marketing kami dapat menghubungi Anda di{' '}
+                <strong className="text-black">{buyerPhone}</strong>. Jika WhatsApp tidak terbuka otomatis, tekan tombol
+                di bawah.
               </p>
               <div className="pt-4 flex justify-center gap-3">
                 <button
@@ -90,11 +112,7 @@ export const KprModal: React.FC<KprModalProps> = ({ unit, isOpen, onClose }) => 
                   Hitung Ulang
                 </button>
                 <a
-                  href={`https://wa.me/6281234567890?text=${encodeURIComponent(
-                    `Halo Hyarta Ecovillage, saya ${buyerName} sudah melakukan simulasi KPR untuk ${unit.name} dengan cicilan perkiraan ${formatRupiah(
-                      kprResult.monthlyInstallment
-                    )}/bulan. Mohon dihubungi lebih lanjut.`
-                  )}`}
+                  href={whatsappLink(consultationMessage)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="px-6 py-2.5 rounded-full bg-[#1b3224] text-white text-xs font-semibold hover:bg-[#284935]"

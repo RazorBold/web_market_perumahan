@@ -3,7 +3,7 @@
 @layer base {
   :root {
     --font-serif: 'Playfair Display', Georgia, serif;
-    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-sans: 'Gantari', system-ui, -apple-system, sans-serif;
     --font-display: 'Cinzel', serif;
   }
 
@@ -28,7 +28,27 @@
 }
 
 .font-sans-clean {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-sans);
+}
+
+/* Modal / drawer entrance */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 200ms ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in {
+    animation: none;
+  }
 }
 
 /* Custom scrollbar */

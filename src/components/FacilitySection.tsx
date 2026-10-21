@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FACILITIES } from '../data/propertyData';
 import { Coffee, Waves, Footprints, Shield, Clock, MapPin, CheckCircle } from 'lucide-react';
+import { whatsappLink } from '../config/contact';
 
 export const FacilitySection: React.FC = () => {
   const [activeFacilityId, setActiveFacilityId] = useState<string>('area-serbaguna');
@@ -96,7 +97,7 @@ export const FacilitySection: React.FC = () => {
 
             <div className="pt-4 border-t border-white/10">
               <a
-                href="https://wa.me/6281234567890?text=Halo%20Hyarta,%20saya%20ingin%20tahu%20lebih%20banyak%20mengenai%20fasilitas%20kawasan."
+                href={whatsappLink('Halo Hyarta, saya ingin tahu lebih banyak mengenai fasilitas kawasan.')}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full py-3 rounded-full bg-[#c88242] text-white hover:bg-[#b07137] text-xs font-semibold tracking-wide uppercase transition-all flex items-center justify-center gap-2 shadow-md"

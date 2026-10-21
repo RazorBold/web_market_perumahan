@@ -20,11 +20,15 @@ interface VideoWalkthroughProps {
 
 export const VideoWalkthrough: React.FC<VideoWalkthroughProps> = ({ onLaunch3D }) => {
   const [activeChapterIndex, setActiveChapterIndex] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(
+    () => !window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+  );
   const [isMuted, setIsMuted] = useState(true);
-  const [progress, setProgress] = useState(0);
-  const [cameraAngle, setCameraAngle] = useState(0);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  // Per-frame values live in refs so the animation loop never triggers React re-renders
+  const cameraAngleRef = useRef(0);
+  const progressRef = useRef(0);
+  const progressBarRef = useRef<HTMLDivElement>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
   const ambientOscillatorRef = useRef<OscillatorNode | null>(null);
 
@@ -38,18 +42,20 @@ export const VideoWalkthrough: React.FC<VideoWalkthroughProps> = ({ onLaunch3D }
     if (!ctx) return;
 
     let animId = 0;
-    let localAngle = cameraAngle;
+    let isVisible = true;
 
     const renderFrame = () => {
+      animId = 0;
       const w = canvas.width;
       const h = canvas.height;
 
       // Advance simulated drone pan if playing
       if (isPlaying) {
-        localAngle += 0.004;
-        setCameraAngle(localAngle);
-        setProgress((prev) => (prev >= 100 ? 0 : prev + 0.1));
+        cameraAngleRef.current += 0.004;
+        progressRef.current = progressRef.current >= 100 ? 0 : progressRef.current + 0.1;
+        if (progressBarRef.current) progressBarRef.current.style.width = `${progressRef.current}%`;
       }
+      const localAngle = cameraAngleRef.current;
 
       // Draw background cinematic architectural scene
       ctx.clearRect(0, 0, w, h);
@@ -152,15 +158,36 @@ export const VideoWalkthrough: React.FC<VideoWalkthroughProps> = ({ onLaunch3D }
       ctx.arc(w / 2, h / 2, 28, 0, Math.PI * 2);
       ctx.stroke();
 
-      animId = requestAnimationFrame(renderFrame);
+      // Paused: one static frame is enough. Offscreen: stop until it scrolls back into view.
+      if (isPlaying && isVisible) animId = requestAnimationFrame(renderFrame);
     };
+
+    const observer = new IntersectionObserver(([entry]) => {
+      isVisible = entry.isIntersecting;
+      if (isVisible && isPlaying && !animId) animId = requestAnimationFrame(renderFrame);
+    });
+    observer.observe(canvas);
 
     animId = requestAnimationFrame(renderFrame);
 
     return () => {
+      observer.disconnect();
       cancelAnimationFrame(animId);
     };
-  }, [isPlaying, cameraAngle]);
+  }, [isPlaying]);
+
+  const resetProgress = () => {
+    progressRef.current = 0;
+    if (progressBarRef.current) progressBarRef.current.style.width = '0%';
+  };
+
+  // Release the audio context when the section unmounts
+  useEffect(() => {
+    return () => {
+      ambientOscillatorRef.current?.stop();
+      audioContextRef.current?.close();
+    };
+  }, []);
 
   // Audio synthesizer for tropical birds / breeze ambiance
   const toggleAudio = () => {
@@ -262,16 +289,14 @@ export const VideoWalkthrough: React.FC<VideoWalkthroughProps> = ({ onLaunch3D }
           <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/95 via-black/70 to-transparent p-4 sm:p-6 space-y-3">
             {/* Scrubber Progress Bar */}
             <div className="w-full bg-white/20 h-1.5 rounded-full overflow-hidden cursor-pointer relative">
-              <div
-                className="bg-[#d4a373] h-full rounded-full transition-all duration-150"
-                style={{ width: `${progress}%` }}
-              />
+              <div ref={progressBarRef} className="bg-[#d4a373] h-full rounded-full" style={{ width: '0%' }} />
             </div>
 
             <div className="flex items-center justify-between text-xs text-white/80">
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => setIsPlaying(!isPlaying)}
+                  aria-label={isPlaying ? 'Jeda tur' : 'Putar tur'}
                   className="w-9 h-9 rounded-full bg-[#d4a373] text-[#131a15] flex items-center justify-center hover:scale-105 transition-all shadow-md font-bold"
                 >
                   {isPlaying ? <Pause className="w-4 h-4 fill-current" /> : <Play className="w-4 h-4 fill-current ml-0.5" />}
@@ -301,7 +326,7 @@ export const VideoWalkthrough: React.FC<VideoWalkthroughProps> = ({ onLaunch3D }
                 key={chap.id}
                 onClick={() => {
                   setActiveChapterIndex(idx);
-                  setProgress(0);
+                  resetProgress();
                   setIsPlaying(true);
                 }}
                 className={`cursor-pointer rounded-2xl p-4 transition-all duration-200 border ${

@@ -2,16 +2,21 @@ import React, { useState } from 'react';
 import { NEARBY_LANDMARKS } from '../data/propertyData';
 import { MapPin, Navigation, Phone, Calendar, Check, Send, Sparkles } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { openWhatsapp, whatsappLink } from '../config/contact';
 
 export const LocationSection: React.FC = () => {
   const [visitorName, setVisitorName] = useState('');
   const [visitorPhone, setVisitorPhone] = useState('');
-  const [preferredDate, setPreferredDate] = useState('');
   const [isBooked, setIsBooked] = useState(false);
+
+  const bookingMessage = `Halo Hyarta Ecovillage, saya ${visitorName} (${visitorPhone}) ingin menjadwalkan kunjungan ke show unit. Mohon info jadwal yang tersedia.`;
 
   const handleBooking = (e: React.FormEvent) => {
     e.preventDefault();
     if (!visitorName || !visitorPhone) return;
+
+    // No backend yet: the booking request is delivered by handing the prefilled message to WhatsApp
+    openWhatsapp(bookingMessage);
 
     confetti({
       particleCount: 50,
@@ -194,11 +199,19 @@ export const LocationSection: React.FC = () => {
             {isBooked ? (
               <div className="bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/20 text-center space-y-2 max-w-lg mx-auto">
                 <Check className="w-8 h-8 text-emerald-400 mx-auto" />
-                <h4 className="font-bold text-lg text-white">Jadwal Berhasil Dikonfirmasi!</h4>
+                <h4 className="font-bold text-lg text-white">Tinggal Kirim Pesan WhatsApp</h4>
                 <p className="text-xs text-white/80">
-                  Terima kasih Bapak/Ibu {visitorName}. Undangan VIP telah dikirimkan ke WhatsApp {visitorPhone}. Kami
-                  menantikan kehadiran Anda di Hyarta Ecovillage!
+                  Terima kasih Bapak/Ibu {visitorName}. Kirim pesan yang sudah kami siapkan di WhatsApp, lalu tim kami
+                  akan mengonfirmasi jadwal kunjungan ke {visitorPhone}.
                 </p>
+                <a
+                  href={whatsappLink(bookingMessage)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block mt-2 px-5 py-2 rounded-full bg-[#c88242] hover:bg-[#b07137] text-white text-xs font-semibold"
+                >
+                  Buka WhatsApp
+                </a>
               </div>
             ) : (
               <form onSubmit={handleBooking} className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 text-left">

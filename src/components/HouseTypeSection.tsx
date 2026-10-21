@@ -16,6 +16,7 @@ import {
   ChevronRight,
   Box,
 } from 'lucide-react';
+import { whatsappLink } from '../config/contact';
 
 interface HouseTypeSectionProps {
   onOpenKpr: (unit: Partial<PropertyUnit>) => void;
@@ -284,9 +285,9 @@ export const HouseTypeSection: React.FC<HouseTypeSectionProps> = ({
                 </button>
 
                 <a
-                  href={`https://wa.me/6281234567890?text=${encodeURIComponent(
+                  href={whatsappLink(
                     `Halo Hyarta Ecovillage, saya ingin menanyakan ketersediaan ${currentModel.name} dan mengunduh e-brochure lengkap.`
-                  )}`}
+                  )}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-2 px-4 py-3 rounded-full bg-[#c88242] text-white hover:bg-[#b07137] text-xs font-semibold tracking-wide transition-all shadow-md"
