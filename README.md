@@ -46,6 +46,20 @@ src/
 
 Menambah artikel atau tipe rumah cukup lewat `src/data/propertyData.ts`; halaman, sitemap, dan metadata ikut dibuat otomatis.
 
+## Model 3D & video
+
+File asli (belum dikompres) disimpan di `source-assets/`; yang dipakai website ada di `public/`.
+
+**Model 3D per tipe rumah.** Townhouse 115 memakai `public/models/townhouse-115.glb`; tipe tanpa file `.glb` otomatis memakai model sederhana. Untuk menambah tipe lain:
+
+```bash
+npm run optimize:model -- source-assets/townhouse-125.glb   # → public/models/townhouse-125.glb
+```
+
+lalu isi `modelUrl: '/models/townhouse-125.glb'` pada tipe tersebut di `src/data/propertyData.ts`. Skrip ini mengecilkan file (tekstur WebP + kompresi geometri meshopt) tanpa membuang efek tekstur timbul. Fitur pisah lantai dan titik ruang membaca nama node di model (`upper_floor`, `furniture_upper`, `furniture_ground_sofa`, dst.), jadi model baru sebaiknya diekspor dengan penamaan yang sama.
+
+**Video tur.** `public/videos/hyarta-tour.mp4` (H.264 + faststart) beserta poster dan thumbnail tiap bab. Waktu mulai tiap bab diatur di `TOUR_VIDEO.chapters` dalam `src/data/propertyData.ts`.
+
 ## Data form (lead)
 
 Form simulasi KPR dan jadwal kunjungan membuka WhatsApp sales dengan pesan terisi, sekaligus mengirim data ke `submitLead`. Tanpa `LEAD_WEBHOOK_URL`, data hanya tercatat di log Vercel (menu **Logs**, cari `[lead]`). Dengan webhook, data dikirim sebagai JSON `{ source, name, phone, detail, createdAt }`, sehingga bisa disambungkan ke Google Sheets (Apps Script), Make, Zapier, n8n, Slack, atau Discord.

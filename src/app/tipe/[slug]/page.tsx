@@ -123,7 +123,7 @@ export default async function HouseTypePage({ params }: PageProps<'/tipe/[slug]'
                 Putar 360°, ubah suasana pagi, senja, atau malam, dan pisahkan tiap lantai untuk melihat susunan ruangnya.
               </p>
             </div>
-            <ThreeHouseViewer modelName={model.name} />
+            <ThreeHouseViewer modelName={model.name} modelUrl={model.modelUrl} />
           </div>
         </section>
 

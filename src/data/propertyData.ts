@@ -20,6 +20,8 @@ export interface HouseModel {
   image: string;
   floorPlanL1: string;
   floorPlanL2: string;
+  /** Real building model in /public/models (optimised with `npm run optimize:model`) */
+  modelUrl?: string;
 }
 
 export interface Facility {
@@ -72,6 +74,7 @@ export const HOUSE_MODELS: HouseModel[] = [
       'Smart door lock & video intercom integrated',
     ],
     image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80',
+    modelUrl: '/models/townhouse-115.glb',
     floorPlanL1: 'Lantai 1: Carport (2 Mobil), Foyer, Living & Dining Room Terbuka, Dapur Bersih & Kotor, Kamar Tidur Tamu, Kamar Mandi, Inner Courtyard, Area Cuci & Servis.',
     floorPlanL2: 'Lantai 2: Master Bedroom dengan En-suite Bathroom & Walk-in Wardrobe, Kamar Tidur Anak 1 & 2, Kamar Mandi Keluarga, Balkon Depan.',
   },
@@ -132,6 +135,11 @@ export const HOUSE_MODELS: HouseModel[] = [
     floorPlanL2: 'Lantai 2: Presidential Master Bedroom dengan Balcony Hijau, 2 Kamar Anak Luas En-Suite, Family Lounge, Rooftop Utility Deck.',
   },
 ];
+
+/** 3D model file for a house type name, if one exists (other types fall back to the procedural model) */
+export function modelUrlFor(name: string): string | undefined {
+  return HOUSE_MODELS.find((model) => model.name === name)?.modelUrl;
+}
 
 export const MASTERPLAN_UNITS: PropertyUnit[] = [
   { id: 'TH-A01', name: 'Kavling A-01', type: 'Townhouse 145', block: 'A', lotNumber: 1, landArea: 185, buildingArea: 145, bedrooms: 4, bathrooms: 4, carport: 2, price: 3450000000, status: 'Terjual', highlightFeature: 'Kavling Sudut Barat' },
@@ -257,33 +265,54 @@ export const NEARBY_LANDMARKS = [
   { name: 'Rumah Sakit JIH & RS Hermina', distance: '3.8 km', time: '8 menit', type: 'Kesehatan' },
 ];
 
-export const CINEMATIC_CHAPTERS = [
-  {
-    id: 'entrance',
-    title: '01. Gerbang Utama & Kemegahan Gerbang Hijau',
-    duration: '0:45',
-    thumbnail: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80',
-    description: 'Menyambut Anda ke dalam oasis tropis Yogyakarta dengan penjagaan 24 jam dan pohon peneduh rindang.',
-  },
-  {
-    id: 'architecture',
-    title: '02. Arsitektur Modern Tropis & Fasad Natural',
-    duration: '1:10',
-    thumbnail: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=600&q=80',
-    description: 'Detail keanggunan atap Joglo kontemporer, kisi kayu ulin, dan dinding batu paras Yogyakarta.',
-  },
-  {
-    id: 'interior',
-    title: '03. Interior Double Height & Inner Courtyard',
-    duration: '1:30',
-    thumbnail: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=600&q=80',
-    description: 'Koneksi tanpa batas antara ruang tamu lapang dan ketenangan taman tropis privat di dalam rumah.',
-  },
-  {
-    id: 'joglo-clubhouse',
-    title: '04. Area Serbaguna Pendopo Joglo & Pool',
-    duration: '1:15',
-    thumbnail: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=600&q=80',
-    description: 'Ruang kebersamaan penghuni bernuansa klasik modern dengan latar belakang air kolam nan jernih.',
-  },
-];
+export interface VideoChapter {
+  id: string;
+  title: string;
+  /** Seconds into the video where this part of the tour begins */
+  start: number;
+  thumbnail: string;
+  description: string;
+}
+
+/** House tour video (AI-generated illustration). Re-encoded from source-assets/ for web playback. */
+export const TOUR_VIDEO = {
+  src: '/videos/hyarta-tour.mp4',
+  poster: '/videos/hyarta-tour-poster.jpg',
+  chapters: [
+    {
+      id: 'taman',
+      title: 'Taman & Fasad',
+      start: 0,
+      thumbnail: '/videos/chapters/taman.jpg',
+      description: 'Halaman berumput dengan pohon peneduh, fasad kayu, dan volume hitam di lantai atas.',
+    },
+    {
+      id: 'teras',
+      title: 'Teras & Ruang Makan Outdoor',
+      start: 2,
+      thumbnail: '/videos/chapters/teras.jpg',
+      description: 'Dek kayu beratap dengan meja makan keluarga yang tersambung langsung ke dalam rumah.',
+    },
+    {
+      id: 'ruang-keluarga',
+      title: 'Ruang Keluarga',
+      start: 4.5,
+      thumbnail: '/videos/chapters/ruang-keluarga.jpg',
+      description: 'Ruang lapang berlantai kayu dengan sofa modular dan cahaya alami dari dinding kaca.',
+    },
+    {
+      id: 'tangga',
+      title: 'Tangga Melayang',
+      start: 6,
+      thumbnail: '/videos/chapters/tangga.jpg',
+      description: 'Anak tangga kayu berpagar kaca menuju lantai atas.',
+    },
+    {
+      id: 'kamar-utama',
+      title: 'Kamar Tidur Utama',
+      start: 8,
+      thumbnail: '/videos/chapters/kamar-utama.jpg',
+      description: 'Kamar di lantai atas dengan jendela lebar menghadap kanopi pepohonan.',
+    },
+  ] satisfies VideoChapter[],
+};

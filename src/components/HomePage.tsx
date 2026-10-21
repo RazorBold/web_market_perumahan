@@ -14,6 +14,7 @@ import { Footer } from './Footer';
 import { ThreeHouseViewer } from './ThreeHouseViewerLazy';
 import { KprModal } from './KprModal';
 import { PropertyUnit } from '../utils/propertyLogic';
+import { modelUrlFor } from '../data/propertyData';
 import { Box, Sparkles, X, Layers, Compass, ArrowRight } from 'lucide-react';
 
 export function HomePage() {
@@ -80,7 +81,7 @@ export function HomePage() {
           </div>
 
           {/* Three.js Interactive Component */}
-          <ThreeHouseViewer modelName={selected3DModel} />
+          <ThreeHouseViewer modelName={selected3DModel} modelUrl={modelUrlFor(selected3DModel)} />
         </div>
       </section>
 
@@ -132,7 +133,7 @@ export function HomePage() {
             </button>
           </div>
           <div className="flex-1 w-full h-full rounded-2xl overflow-hidden">
-            <ThreeHouseViewer modelName={selected3DModel} className="w-full h-full" />
+            <ThreeHouseViewer modelName={selected3DModel} modelUrl={modelUrlFor(selected3DModel)} className="w-full h-full" />
           </div>
         </div>
       )}
