@@ -1,20 +1,22 @@
+'use client';
+
 import React, { useState } from 'react';
-import { Navbar } from './components/Navbar';
-import { HeroSection } from './components/HeroSection';
-import { ConceptSection } from './components/ConceptSection';
-import { MasterplanViewer } from './components/MasterplanViewer';
-import { HouseTypeSection } from './components/HouseTypeSection';
-import { FacilitySection } from './components/FacilitySection';
-import { VideoWalkthrough } from './components/VideoWalkthrough';
-import { ArticlesSection } from './components/ArticlesSection';
-import { LocationSection } from './components/LocationSection';
-import { Footer } from './components/Footer';
-import { ThreeHouseViewer } from './components/ThreeHouseViewer';
-import { KprModal } from './components/KprModal';
-import { PropertyUnit } from './utils/propertyLogic';
+import { Navbar } from './Navbar';
+import { HeroSection } from './HeroSection';
+import { ConceptSection } from './ConceptSection';
+import { MasterplanViewer } from './MasterplanViewer';
+import { HouseTypeSection } from './HouseTypeSection';
+import { FacilitySection } from './FacilitySection';
+import { VideoWalkthrough } from './VideoWalkthrough';
+import { ArticlesSection } from './ArticlesSection';
+import { LocationSection } from './LocationSection';
+import { Footer } from './Footer';
+import { ThreeHouseViewer } from './ThreeHouseViewerLazy';
+import { KprModal } from './KprModal';
+import { PropertyUnit } from '../utils/propertyLogic';
 import { Box, Sparkles, X, Layers, Compass, ArrowRight } from 'lucide-react';
 
-export default function App() {
+export function HomePage() {
   const [is3DModalOpen, setIs3DModalOpen] = useState(false);
   const [selected3DModel, setSelected3DModel] = useState('Townhouse 115');
   const [kprUnit, setKprUnit] = useState<Partial<PropertyUnit> | null>(null);

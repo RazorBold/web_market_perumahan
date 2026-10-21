@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 import { MASTERPLAN_UNITS } from '../data/propertyData';
 import { PropertyUnit, formatRupiah } from '../utils/propertyLogic';

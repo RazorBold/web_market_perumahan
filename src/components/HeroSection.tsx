@@ -1,5 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
-import gsap from 'gsap';
+'use client';
+
+import React, { useState } from 'react';
+import Image from 'next/image';
 import { Box, Play, ChevronDown, Sparkles, Compass, Shield } from 'lucide-react';
 
 interface HeroSectionProps {
@@ -8,12 +10,6 @@ interface HeroSectionProps {
 }
 
 export const HeroSection: React.FC<HeroSectionProps> = ({ onOpen3D, onOpenVideo }) => {
-  const heroRef = useRef<HTMLDivElement>(null);
-  const headlineRef = useRef<HTMLHeadingElement>(null);
-  const subtitleRef = useRef<HTMLParagraphElement>(null);
-  const ctaRef = useRef<HTMLDivElement>(null);
-  const logoRef = useRef<HTMLDivElement>(null);
-
   const [activeSlide, setActiveSlide] = useState(0);
 
   const slides = [
@@ -31,43 +27,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpen3D, onOpenVideo 
     },
   ];
 
-  // GSAP Animations on Mount
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-
-      tl.fromTo(
-        logoRef.current,
-        { opacity: 0, y: -25 },
-        { opacity: 1, y: 0, duration: 1, delay: 0.2 }
-      )
-        .fromTo(
-          headlineRef.current,
-          { opacity: 0, y: 35, scale: 0.96 },
-          { opacity: 1, y: 0, scale: 1, duration: 1.2 },
-          '-=0.6'
-        )
-        .fromTo(
-          subtitleRef.current,
-          { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 1 },
-          '-=0.7'
-        )
-        .fromTo(
-          ctaRef.current,
-          { opacity: 0, y: 25 },
-          { opacity: 1, y: 0, duration: 0.9 },
-          '-=0.6'
-        );
-    }, heroRef);
-
-    return () => ctx.revert();
-  }, []);
-
   return (
     <section
       id="home"
-      ref={heroRef}
       className="relative min-h-screen flex items-center justify-center text-white overflow-hidden pt-20 pb-16"
     >
       {/* Background Slides with smooth fade */}
@@ -79,10 +41,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpen3D, onOpenVideo 
           }`}
           style={{ transitionProperty: 'opacity, transform', transitionDuration: '1200ms' }}
         >
-          <img
+          <Image
             src={slide.image}
             alt="Hyarta Ecovillage Hero"
-            className="w-full h-full object-cover object-center"
+            fill
+            sizes="100vw"
+            preload={idx === 0}
+            className="object-cover object-center"
           />
           {/* Multi-layered cinematic shadows */}
           <div className="absolute inset-0 bg-gradient-to-t from-[#121c15] via-[#121c15]/45 to-black/50" />
@@ -93,7 +58,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpen3D, onOpenVideo 
       {/* Hero Central Content matching mockup */}
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
         {/* Brand Crest / Logo Monogram matching image */}
-        <div ref={logoRef} className="mb-6 flex flex-col items-center">
+        <div
+          className="hero-reveal mb-6 flex flex-col items-center"
+          style={{ '--hero-from-y': '-25px', '--hero-delay': '0.2s' } as React.CSSProperties}
+        >
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/40 backdrop-blur-md border border-white/20 text-xs font-semibold text-[#f0e4d3] tracking-[0.25em] uppercase mb-4 shadow-lg">
             <Sparkles className="w-3.5 h-3.5 text-[#d4a373]" /> Yogyakarta Eco Sanctuary
           </div>
@@ -107,16 +75,16 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpen3D, onOpenVideo 
 
         {/* Exact Headline matching screenshot */}
         <h1
-          ref={headlineRef}
-          className="text-4xl sm:text-6xl md:text-7xl font-serif-luxury font-normal text-[#fbf8f2] tracking-tight leading-[1.1] max-w-4xl drop-shadow-lg"
+          className="hero-reveal text-4xl sm:text-6xl md:text-7xl font-serif-luxury font-normal text-[#fbf8f2] tracking-tight leading-[1.1] max-w-4xl drop-shadow-lg"
+          style={{ '--hero-from-y': '35px', '--hero-from-scale': '0.96', '--hero-delay': '0.6s', '--hero-duration': '1.2s' } as React.CSSProperties}
         >
           A home that grows with you
         </h1>
 
         {/* Exact Subtitle matching screenshot */}
         <p
-          ref={subtitleRef}
-          className="mt-6 text-sm sm:text-base md:text-lg text-[#ded8cb] max-w-2xl mx-auto font-light leading-relaxed drop-shadow"
+          className="hero-reveal mt-6 text-sm sm:text-base md:text-lg text-[#ded8cb] max-w-2xl mx-auto font-light leading-relaxed drop-shadow"
+          style={{ '--hero-from-y': '20px', '--hero-delay': '1.1s' } as React.CSSProperties}
         >
           Konsep lingkungan berbasis komunitas dimana setiap individu berkontribusi untuk keberadaan satu sama lain
           dan lingkungan tempat mereka tinggal.
@@ -124,8 +92,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpen3D, onOpenVideo 
 
         {/* CTA Buttons */}
         <div
-          ref={ctaRef}
-          className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto"
+          className="hero-reveal mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto"
+          style={{ '--hero-delay': '1.5s', '--hero-duration': '0.9s' } as React.CSSProperties}
         >
           <button
             onClick={onOpen3D}

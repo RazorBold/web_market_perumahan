@@ -1,4 +1,8 @@
+'use client';
+
 import React, { useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
 import { HOUSE_MODELS, HouseModel } from '../data/propertyData';
 import { formatRupiah, PropertyUnit } from '../utils/propertyLogic';
 import {
@@ -111,10 +115,12 @@ export const HouseTypeSection: React.FC<HouseTypeSectionProps> = ({
             <div className="absolute inset-0 z-0">
               {viewMode === 'photo' ? (
                 <>
-                  <img
+                  <Image
                     src={currentModel.image}
                     alt={currentModel.name}
-                    className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                    className="object-cover transition-transform duration-700 hover:scale-105"
+                    fill
+                    sizes="(min-width: 1024px) 60vw, 100vw"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                 </>
@@ -295,6 +301,13 @@ export const HouseTypeSection: React.FC<HouseTypeSectionProps> = ({
                   <FileText className="w-4 h-4" /> Unduh Brosur
                 </a>
               </div>
+
+              <Link
+                href={`/tipe/${currentModel.id}`}
+                className="flex items-center justify-center gap-1.5 text-sm font-semibold text-[#1b3224] hover:text-[#c88242] transition-colors"
+              >
+                Lihat detail lengkap {currentModel.name} <ChevronRight className="w-4 h-4" />
+              </Link>
             </div>
           </div>
         </div>

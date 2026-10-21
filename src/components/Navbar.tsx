@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Phone, Box, Sparkles, MapPin } from 'lucide-react';
 import { whatsappLink } from '../config/contact';

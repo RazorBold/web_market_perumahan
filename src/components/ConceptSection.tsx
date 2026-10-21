@@ -1,4 +1,7 @@
+'use client';
+
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { ArrowUpRight, Award, Shield, Trees, Building2, CheckCircle2, X } from 'lucide-react';
 
 export const ConceptSection: React.FC = () => {
@@ -26,10 +29,12 @@ export const ConceptSection: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-5 mb-14">
           {/* Card 1: Main Neighborhood View (Col-span 6) */}
           <div className="md:col-span-6 rounded-3xl overflow-hidden shadow-lg border border-[#ded8cb] relative group min-h-[300px] sm:min-h-[380px]">
-            <img
+            <Image
               src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80"
               alt="Kawasan Lingkungan Hyarta Ecovillage"
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              className="object-cover group-hover:scale-105 transition-transform duration-700"
+              fill
+              sizes="(min-width: 768px) 50vw, 100vw"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-6 flex flex-col justify-end text-white">
               <span className="text-[11px] font-semibold uppercase tracking-wider text-[#d4a373]">
@@ -44,10 +49,12 @@ export const ConceptSection: React.FC = () => {
 
           {/* Card 2: Modern Tropical Clubhouse (Col-span 3) */}
           <div className="md:col-span-3 rounded-3xl overflow-hidden shadow-lg border border-[#ded8cb] relative group min-h-[300px] sm:min-h-[380px]">
-            <img
+            <Image
               src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80"
               alt="Clubhouse & Pavilion"
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              className="object-cover group-hover:scale-105 transition-transform duration-700"
+              fill
+              sizes="(min-width: 768px) 25vw, 100vw"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-6 flex flex-col justify-end text-white">
               <span className="text-[11px] font-semibold uppercase tracking-wider text-[#d4a373]">
@@ -60,10 +67,12 @@ export const ConceptSection: React.FC = () => {
 
           {/* Card 3: 45% Lush Tree Canopy (Col-span 3) */}
           <div className="md:col-span-3 rounded-3xl overflow-hidden shadow-lg border border-[#ded8cb] relative group min-h-[300px] sm:min-h-[380px]">
-            <img
+            <Image
               src="https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=800&q=80"
               alt="Lahan Hijau & Hutan Konservasi"
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              className="object-cover group-hover:scale-105 transition-transform duration-700"
+              fill
+              sizes="(min-width: 768px) 25vw, 100vw"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-6 flex flex-col justify-end text-white">
               <span className="text-[11px] font-semibold uppercase tracking-wider text-[#d4a373]">

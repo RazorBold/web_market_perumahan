@@ -33,8 +33,12 @@ export interface Facility {
 
 export interface Article {
   id: string;
+  /** URL segment for /artikel/[slug] */
+  slug: string;
   title: string;
   date: string;
+  /** ISO date for sitemap & structured metadata */
+  publishedAt: string;
   category: string;
   readTime: string;
   summary: string;
@@ -186,8 +190,10 @@ export const FACILITIES: Facility[] = [
 export const ARTICLES: Article[] = [
   {
     id: 'artikel-1',
+    slug: 'cara-merawat-rumah-agar-tetap-bersih-dan-nyaman',
     title: 'Cara merawat rumah agar tetap bersih dan nyaman',
     date: '18 Oktober 2026',
+    publishedAt: '2026-10-18',
     category: 'Home & Living',
     readTime: '4 menit baca',
     summary: 'Langkah praktis menjaga kesegaran interior bergaya eco-living tropis dengan sirkulasi udara alami dan pencahayaan efisien.',
@@ -202,8 +208,10 @@ export const ARTICLES: Article[] = [
   },
   {
     id: 'artikel-2',
+    slug: '10-tanaman-yang-cocok-untuk-di-dalam-rumah',
     title: '10 Tanaman yang cocok untuk di dalam rumah',
     date: '12 Oktober 2026',
+    publishedAt: '2026-10-12',
     category: 'Gardening & Landscape',
     readTime: '5 menit baca',
     summary: 'Rekomendasi tanaman hias indoor penyerap racun udara dan penyejuk ruangan yang mudah dirawat di iklim Yogyakarta.',
@@ -221,8 +229,10 @@ export const ARTICLES: Article[] = [
   },
   {
     id: 'artikel-3',
-    title: 'Tips dan trik perkarangan tetap bersih',
+    slug: 'tips-dan-trik-pekarangan-tetap-bersih',
+    title: 'Tips dan trik pekarangan tetap bersih',
     date: '05 Oktober 2026',
+    publishedAt: '2026-10-05',
     category: 'Eco Architecture',
     readTime: '3 menit baca',
     summary: 'Panduan menata pekarangan tropis bebas genangan air, bebas nyamuk, dan tetap asri di musim penghujan maupun kemarau.',

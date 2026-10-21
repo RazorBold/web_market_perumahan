@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { ARTICLES, Article } from '../data/propertyData';
-import { BookOpen, Calendar, Clock, ArrowRight, X, Sparkles } from 'lucide-react';
+import React from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { ARTICLES } from '../data/propertyData';
+import { Calendar, Clock, ArrowRight } from 'lucide-react';
 
 export const ArticlesSection: React.FC = () => {
-  const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
-
   return (
     <section id="artikel" className="py-24 bg-[#f8f6f0] text-[#2b302c] relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -26,18 +26,20 @@ export const ArticlesSection: React.FC = () => {
         {/* 3 Articles Grid matching mockup */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {ARTICLES.map((article) => (
-            <div
+            <Link
               key={article.id}
-              onClick={() => setSelectedArticle(article)}
+              href={`/artikel/${article.slug}`}
               className="bg-white rounded-3xl overflow-hidden border border-[#ded8cb] shadow-md hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between group cursor-pointer"
             >
               <div>
                 {/* Image */}
                 <div className="relative h-56 overflow-hidden bg-[#e0d8cb]">
-                  <img
+                  <Image
                     src={article.image}
                     alt={article.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    fill
+                    sizes="(min-width: 768px) 33vw, 100vw"
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                   <div className="absolute top-4 left-4 bg-[#1b3224]/85 backdrop-blur-md px-3 py-1 rounded-full text-[11px] font-semibold text-[#f5eee2] border border-white/10">
                     {article.category}
@@ -70,55 +72,10 @@ export const ArticlesSection: React.FC = () => {
                 <span className="uppercase tracking-wider">Baca Selengkapnya</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
-
-      {/* Article Reader Modal */}
-      {selectedArticle && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-          <div className="bg-[#faf8f5] w-full max-w-2xl rounded-3xl border border-[#ded7ca] shadow-2xl p-6 sm:p-8 space-y-6 relative max-h-[85vh] overflow-y-auto">
-            <button
-              onClick={() => setSelectedArticle(null)}
-              className="absolute top-5 right-5 w-8 h-8 rounded-full bg-[#ede6da] hover:bg-[#ded5c5] flex items-center justify-center text-[#2b302c]"
-            >
-              <X className="w-4 h-4" />
-            </button>
-
-            <div className="space-y-2">
-              <span className="text-xs font-semibold uppercase text-[#a8743d] tracking-widest">
-                {selectedArticle.category} • {selectedArticle.date}
-              </span>
-              <h3 className="text-2xl sm:text-3xl font-serif-luxury font-bold text-[#1b3224]">
-                {selectedArticle.title}
-              </h3>
-            </div>
-
-            <img
-              src={selectedArticle.image}
-              alt={selectedArticle.title}
-              className="w-full h-64 object-cover rounded-2xl border border-[#ded7ca]"
-            />
-
-            <div className="space-y-4 text-sm text-[#464e45] leading-relaxed">
-              {selectedArticle.content.map((paragraph, idx) => (
-                <p key={idx}>{paragraph}</p>
-              ))}
-            </div>
-
-            <div className="pt-4 border-t border-[#e2dcd0] flex justify-between items-center">
-              <span className="text-xs text-[#7e857c]">Hyarta Ecovillage Editorial Team</span>
-              <button
-                onClick={() => setSelectedArticle(null)}
-                className="px-6 py-2 rounded-full bg-[#1b3224] text-white text-xs font-semibold hover:bg-[#284935]"
-              >
-                Tutup Artikel
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </section>
   );
 };

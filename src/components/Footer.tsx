@@ -55,32 +55,32 @@ export const Footer: React.FC = () => {
             </h4>
             <ul className="space-y-2 text-xs text-[#a9b5ab]">
               <li>
-                <a href="#home" className="hover:text-white transition-colors">
+                <a href="/#home" className="hover:text-white transition-colors">
                   Beranda
                 </a>
               </li>
               <li>
-                <a href="#konsep" className="hover:text-white transition-colors">
+                <a href="/#konsep" className="hover:text-white transition-colors">
                   Konsep Eco-Living
                 </a>
               </li>
               <li>
-                <a href="#denah-lokasi" className="hover:text-white transition-colors">
+                <a href="/#denah-lokasi" className="hover:text-white transition-colors">
                   Denah Masterplan & Kavling
                 </a>
               </li>
               <li>
-                <a href="#tipe-rumah" className="hover:text-white transition-colors">
+                <a href="/#tipe-rumah" className="hover:text-white transition-colors">
                   Pilihan Tipe Rumah (115, 125, 145)
                 </a>
               </li>
               <li>
-                <a href="#fasilitas" className="hover:text-white transition-colors">
+                <a href="/#fasilitas" className="hover:text-white transition-colors">
                   Area Serbaguna Joglo
                 </a>
               </li>
               <li>
-                <a href="#video-tour" className="hover:text-white transition-colors">
+                <a href="/#video-tour" className="hover:text-white transition-colors">
                   Tur Video Sinematik 4K
                 </a>
               </li>

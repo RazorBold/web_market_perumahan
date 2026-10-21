@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useEffect, useRef } from 'react';
 import { CINEMATIC_CHAPTERS } from '../data/propertyData';
 import {
@@ -20,9 +22,7 @@ interface VideoWalkthroughProps {
 
 export const VideoWalkthrough: React.FC<VideoWalkthroughProps> = ({ onLaunch3D }) => {
   const [activeChapterIndex, setActiveChapterIndex] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(
-    () => !window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
-  );
+  const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   // Per-frame values live in refs so the animation loop never triggers React re-renders
@@ -33,6 +33,11 @@ export const VideoWalkthrough: React.FC<VideoWalkthroughProps> = ({ onLaunch3D }
   const ambientOscillatorRef = useRef<OscillatorNode | null>(null);
 
   const currentChapter = CINEMATIC_CHAPTERS[activeChapterIndex];
+
+  // No autoplay for visitors who asked for reduced motion (window is only available after hydration)
+  useEffect(() => {
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) setIsPlaying(false);
+  }, []);
 
   // Procedural Cinematic Canvas Rendering for the Virtual Walkthrough Video
   useEffect(() => {

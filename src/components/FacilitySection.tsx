@@ -1,4 +1,7 @@
+'use client';
+
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { FACILITIES } from '../data/propertyData';
 import { Coffee, Waves, Footprints, Shield, Clock, MapPin, CheckCircle } from 'lucide-react';
 import { whatsappLink } from '../config/contact';
@@ -50,10 +53,12 @@ export const FacilitySection: React.FC = () => {
         <div className="rounded-3xl overflow-hidden border border-white/15 bg-[#202e25] shadow-2xl grid grid-cols-1 lg:grid-cols-12 gap-0 mb-10">
           {/* Main Visual */}
           <div className="lg:col-span-8 relative min-h-[360px] sm:min-h-[460px] group overflow-hidden">
-            <img
+            <Image
               src={activeFacility.image}
               alt={activeFacility.name}
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              className="object-cover transition-transform duration-700 group-hover:scale-105"
+              fill
+              sizes="(min-width: 1024px) 66vw, 100vw"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent p-6 sm:p-8 flex flex-col justify-end">
               <span className="text-xs uppercase font-semibold tracking-wider text-[#d4a373] mb-1">

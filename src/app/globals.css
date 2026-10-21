@@ -2,9 +2,10 @@
 
 @layer base {
   :root {
-    --font-serif: 'Playfair Display', Georgia, serif;
-    --font-sans: 'Gantari', system-ui, -apple-system, sans-serif;
-    --font-display: 'Cinzel', serif;
+    /* --font-gantari / --font-playfair / --font-cinzel are injected by next/font in app/layout.tsx */
+    --font-serif: var(--font-playfair), Georgia, serif;
+    --font-sans: var(--font-gantari), system-ui, -apple-system, sans-serif;
+    --font-display: var(--font-cinzel), serif;
   }
 
   html {
@@ -20,11 +21,11 @@
 }
 
 .font-serif-luxury {
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: var(--font-serif);
 }
 
 .font-display-luxury {
-  font-family: 'Cinzel', serif;
+  font-family: var(--font-display);
 }
 
 .font-sans-clean {
@@ -45,8 +46,25 @@
   animation: fade-in 200ms ease-out both;
 }
 
+/* Hero page-load sequence: pure CSS so server-rendered text never flashes before hydration */
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(var(--hero-from-y, 25px)) scale(var(--hero-from-scale, 1));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.hero-reveal {
+  animation: hero-rise var(--hero-duration, 1s) cubic-bezier(0.215, 0.61, 0.355, 1) var(--hero-delay, 0s) both;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .animate-fade-in {
+  .animate-fade-in,
+  .hero-reveal {
     animation: none;
   }
 }

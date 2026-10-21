@@ -1,8 +1,11 @@
+'use client';
+
 import React, { useState } from 'react';
 import { NEARBY_LANDMARKS } from '../data/propertyData';
 import { MapPin, Navigation, Phone, Calendar, Check, Send, Sparkles } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { openWhatsapp, whatsappLink } from '../config/contact';
+import { submitLead } from '../app/actions/lead';
 
 export const LocationSection: React.FC = () => {
   const [visitorName, setVisitorName] = useState('');
@@ -15,8 +18,10 @@ export const LocationSection: React.FC = () => {
     e.preventDefault();
     if (!visitorName || !visitorPhone) return;
 
-    // No backend yet: the booking request is delivered by handing the prefilled message to WhatsApp
+    // Open WhatsApp synchronously (inside the submit gesture, so it is not popup-blocked),
+    // then record the lead server-side in the background
     openWhatsapp(bookingMessage);
+    submitLead({ source: 'kunjungan', name: visitorName, phone: visitorPhone }).catch(() => {});
 
     confetti({
       particleCount: 50,

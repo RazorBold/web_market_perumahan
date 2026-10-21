@@ -1,8 +1,11 @@
+'use client';
+
 import React, { useState } from 'react';
 import { calculateKpr, formatRupiah, PropertyUnit } from '../utils/propertyLogic';
 import { Calculator, X, Building, Check, ArrowRight, ShieldCheck, Percent, Calendar } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { openWhatsapp, whatsappLink } from '../config/contact';
+import { submitLead } from '../app/actions/lead';
 
 interface KprModalProps {
   unit: Partial<PropertyUnit> | null;
@@ -51,8 +54,10 @@ const KprModalContent: React.FC<KprModalContentProps> = ({ unit, onClose }) => {
     e.preventDefault();
     if (!buyerName || !buyerPhone) return;
 
-    // No backend yet: the lead is delivered by handing the prefilled message to WhatsApp
+    // Open WhatsApp synchronously (inside the submit gesture, so it is not popup-blocked),
+    // then record the lead server-side in the background
     openWhatsapp(consultationMessage);
+    submitLead({ source: 'kpr', name: buyerName, phone: buyerPhone, detail: consultationMessage }).catch(() => {});
 
     confetti({
       particleCount: 60,
